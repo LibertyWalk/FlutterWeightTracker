@@ -10,11 +10,9 @@ class AddWorkoutScreen extends StatefulWidget {
 
 class AddWorkoutScreenState extends State<AddWorkoutScreen> {
 
-
   static var uuid = new Uuid();
   Workout workout =
-      new Workout(title: "", description: "", id: uuid.v4(), isExpanded: false);
-
+      new Workout(title: "", id: uuid.v4());
 
   void navigateBack() {
     AppDatabase db = new AppDatabase();
@@ -44,15 +42,6 @@ class AddWorkoutScreenState extends State<AddWorkoutScreen> {
                 hintText: "Title",
               ),
               onChanged: (String input) => workout.title = input,
-            ),
-          ),
-          new ListTile(
-            leading: const Icon(Icons.phone),
-            title: new TextField(
-              decoration: new InputDecoration(
-                hintText: "Description",
-              ),
-              onChanged: (String input) => workout.description = input,
             ),
           ),
         ],

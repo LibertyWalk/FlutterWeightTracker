@@ -26,8 +26,8 @@ class AppDatabase {
   }
 
   void createDatabase(Database db, int version) async {
-    await db.execute("CREATE TABLE Workouts(id STRING PRIMARY KEY, title TEXT, description TEXT)");
-    await db.execute("CREATE TABLE Routines(id STRING PRIMARY KEY, title TEXT, notes TEXT, weight INTEGER, reps INTEGER)");
+    await db.execute("CREATE TABLE Workouts(id STRING PRIMARY KEY, title TEXT)");
+    await db.execute("CREATE TABLE Routines(id STRING PRIMARY KEY, title TEXT, notes TEXT, weight INTEGER, reps INTEGER, workout TEXT)");
 
     print("Database was Created!");
   }
@@ -35,7 +35,7 @@ class AppDatabase {
   Future<List<Workout>> getAllWorkouts() async {
     var dbClient = await db;
     List<Map> res = await dbClient.query("Workouts");
-    return res.map((map) => new Workout(title: map["title"], description: map["description"], id: map["id"])).toList();
+    return res.map((map) => new Workout(title: map["title"], id: map["id"])).toList();
   }
 
   Future<List<Routine>> getAllRoutines(String workout) async {
