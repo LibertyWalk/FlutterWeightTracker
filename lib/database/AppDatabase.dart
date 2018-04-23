@@ -20,7 +20,7 @@ class AppDatabase {
 
   Future<Database> initDB() async {
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
-    String path = join(documentsDirectory.path, "main.db");
+    String path = join(documentsDirectory.path, "mainDb.db");
     var theDb = await openDatabase(path, version: 1, onCreate: createDatabase);
     return theDb;
   }
@@ -33,15 +33,27 @@ class AppDatabase {
   }
 
   Future<List<Workout>> getAllWorkouts() async {
-    var dbClient = await db;
+    var dbClient = await db; 
     List<Map> res = await dbClient.query("Workouts");
     return res.map((map) => new Workout(title: map["title"], id: map["id"])).toList();
   }
 
-  Future<List<Routine>> getAllRoutines(String workout) async {
+  Future<List<Routine>> getAllRoutines() async {
     var dbClient = await db;
-    List<Map> res = await dbClient.query("Routines", where: "workout = ?", whereArgs: [workout]);
-    return res.map((map) => new Routine(title: map["title"], description: map["description"], id: map["id"], workout: map["workout"])).toList();
+    List<Map> res = await dbClient.query("Routines");
+    print(res);
+    return res.map((map) => new Routine(title: map["title"], notes: map["notes"], id: map["id"], workout: map["workout"])).toList();
+  }
+
+  Future<List<Routine>> getWorkoutRoutines(String workoutTitle) async {
+    print("Getting routines with: " + workoutTitle);
+    var dbClient = await db;
+    List<Map> res = await dbClient.query(
+      "Routines", 
+      where: "workout = ?", 
+      whereArgs: [workoutTitle]);
+    print(res);
+    return res.map((map) => new Routine(title: map["title"], notes: map["notes"], id: map["id"], workout: map["workout"])).toList();
   }
 
   Future<int> addWorkout(Workout workout) async {
@@ -92,7 +104,7 @@ class AppDatabase {
       "Routines",
       where: "id = ?",
       whereArgs: [id]);
-      print("Deleted workout with ID: " + id);
+      print("Deleted routine with ID: " + id);
       return res;
   }
 

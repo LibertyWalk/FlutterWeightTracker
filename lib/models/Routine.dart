@@ -2,25 +2,31 @@ import 'package:meta/meta.dart';
 
 class Routine {
   String title;
-  String description;
+  String notes;
   String id;
   String workout;
+  double weight;
+  double reps;
   bool isExpanded;
 
   Routine({
     @required this.title,
     @required this.id,
     @required this.workout,
-    this.description,
-    this.isExpanded
+    this.notes,
+    this.isExpanded,
+    this.weight,
+    this.reps
   });
 
   Map<String, dynamic> toMap() {
     var map = new Map<String, dynamic>();
     map['id'] = id;
     map['title'] = title;
-    map['description'] = description;
+    map['notes'] = notes;
     map['workout'] = workout;
+    map['weight'] = weight;
+    map['reps'] = reps;
     return map;
   }
 
@@ -28,5 +34,7 @@ class Routine {
       : title = map["title"],
         id = map["id"],
         workout = map["workout"],
-        description = map["description"].toString();
+        notes = map["notes"].toString(),
+        weight = map["weight"],
+        reps = map["reps"];
 }

@@ -23,23 +23,20 @@ class WorkoutItemState extends State<WorkoutItem> {
     workoutState = widget.workout;
   }
 
-  void onPress() async {
+  void openWorkoutDetailScreen() async {
     Navigator
         .push(context,
-            new MaterialPageRoute(builder: (context) => new WorkoutDetailScreen(workoutState)))
-        .then((b) {
-      //populateRoutines();
-    });
+            new MaterialPageRoute(builder: (context) => new WorkoutDetailScreen(workoutState)));
   }
 
   @override
   Widget build(BuildContext context) {
-    onPress: onPress();
     return new Card(
       child: new Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           new ListTile(
+            onTap:() => openWorkoutDetailScreen(),
             leading: const Icon(Icons.check), //Maybe image?
             title: new RichText(
               text: new TextSpan(

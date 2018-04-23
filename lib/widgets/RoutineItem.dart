@@ -23,6 +23,11 @@ class RoutineItemState extends State<RoutineItem> {
     routineState = widget.routine;
   }
 
+  void updateRoutine() async {
+    AppDatabase db = new AppDatabase();
+    db.updateRoutine(routineState);
+  }
+
   @override
   Widget build(BuildContext context) {
     return new ExpansionTile(
@@ -33,7 +38,7 @@ class RoutineItemState extends State<RoutineItem> {
           padding: const EdgeInsets.all(10.0),
           child: new RichText(
             text: new TextSpan(
-              text: routineState.description,
+              text: routineState.notes,
               style: new TextStyle(
                 fontSize: 14.0,
                 fontWeight: FontWeight.w200,
@@ -50,16 +55,29 @@ class RoutineItemState extends State<RoutineItem> {
         icon: new Icon(Icons.delete),
         onPressed: () => widget.onDelete(routineState.id)
       ),
-      title: new RichText(
-        text:  new TextSpan(
-          text: routineState.title,
-          style: new TextStyle(
-            fontSize: 12.0,
-            fontWeight: FontWeight.w300,
-            color: Colors.black
+      title: new Column(
+        children: <Widget>[
+          new TextFormField(
+            decoration: new InputDecoration(
+              hintText: routineState.weight.toString()
+            ),
+            initialValue: routineState.weight.toString(),
+            onSaved: (text) => routineState.weight = double.parse(text),
           ),
-        ),
-      ),
+          new RichText(
+            text: new TextSpan(
+              text: "x"
+            ),
+          ),
+          new TextFormField(
+            decoration: new InputDecoration(
+              hintText: routineState.reps.toString()
+            ),
+            initialValue: routineState.reps.toString(),
+            onSaved: (text) => routineState.reps = double.parse(text),
+          ),
+        ],
+      )
     );
   }
 }

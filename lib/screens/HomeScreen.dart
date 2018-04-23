@@ -46,6 +46,16 @@ class HomeScreenState extends State<HomeScreen> {
     populateWorkouts();
   }
 
+  void getAllRoutines () async {
+    AppDatabase db = new AppDatabase();
+    db.getAllRoutines();
+  }
+
+  void deleteAllRoutines () async {
+    AppDatabase db = new AppDatabase();
+    db.clearRoutines();
+  }
+
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -55,6 +65,14 @@ class HomeScreenState extends State<HomeScreen> {
           new IconButton(
             icon: new Icon(Icons.delete),
             onPressed: () => clearDb(),
+          ),
+          new IconButton(
+            icon: new Icon(Icons.healing),
+            onPressed: () => getAllRoutines(),
+          ),
+          new IconButton(
+            icon: new Icon(Icons.warning),
+            onPressed: () => deleteAllRoutines(),
           )
         ],
       ),

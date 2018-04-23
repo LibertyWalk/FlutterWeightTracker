@@ -1,22 +1,38 @@
 import 'package:flutter/material.dart';
 import 'package:weight_tracker/models/Routine.dart';
+import 'package:weight_tracker/models/Workout.dart';
 import 'package:weight_tracker/database/AppDatabase.dart';
 import 'package:uuid/uuid.dart';
 
-class AddWorkoutScreen extends StatefulWidget {
+class AddRoutineScreen extends StatefulWidget {
+  //final Workout workout;
+  final String workoutTitle;
+  AddRoutineScreen(this.workoutTitle);
   @override
-  AddWorkoutScreenState createState() => new AddWorkoutScreenState();
+  AddRoutineScreenState createState() => new AddRoutineScreenState();
 }
 
-class AddWorkoutScreenState extends State<AddWorkoutScreen> {
+class AddRoutineScreenState extends State<AddRoutineScreen> {
 
-
+  String workoutTitleString;
+  static String proxyString;
+  String routineTitle;
+  String routineNotes;
   static var uuid = new Uuid();
-  Routine routine =
-      new Routine(title: "", description: "", id: uuid.v4(), isExpanded: false, workout: "");
+
+  @override
+  void initState() {
+    super.initState();
+    workoutTitleString = widget.workoutTitle;
+    proxyString = workoutTitleString;
+    print("Opening Screen: " + proxyString);
+  }
+
 
 
   void navigateBack() {
+    Routine routine =
+      new Routine(title: routineTitle, notes: routineNotes, id: uuid.v4(), isExpanded: false, workout: proxyString);
     AppDatabase db = new AppDatabase();
     db.addRoutine(routine);
     Navigator.of(context).pop();
@@ -43,16 +59,16 @@ class AddWorkoutScreenState extends State<AddWorkoutScreen> {
               decoration: new InputDecoration(
                 hintText: "Title",
               ),
-              onChanged: (String input) => routine.title = input,
+              onChanged: (String input) => routineTitle = input,
             ),
           ),
           new ListTile(
             leading: const Icon(Icons.phone),
             title: new TextField(
               decoration: new InputDecoration(
-                hintText: "Description",
+                hintText: "notes",
               ),
-              onChanged: (String input) => routine.description = input,
+              onChanged: (String input) => routineNotes = input,
             ),
           ),
         ],

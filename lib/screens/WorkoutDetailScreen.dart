@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:weight_tracker/models/Routine.dart';
 import 'package:weight_tracker/models/Workout.dart';
 import 'package:weight_tracker/database/AppDatabase.dart';
-import 'package:weight_tracker/screens/AddWorkoutScreen.dart';
+import 'package:weight_tracker/screens/AddRoutineScreen.dart';
+import 'package:weight_tracker/screens/AddRoutineForm.dart';
 import 'package:weight_tracker/widgets/RoutineItem.dart';
 import 'package:uuid/uuid.dart';
 
@@ -23,10 +24,10 @@ class WorkoutDetailScreenState extends State<WorkoutDetailScreen> {
     workoutState = widget.workout;
   }
 
-  void openAddWorkoutScreen() async {
+  void openAddRoutineScreen() async {
     Navigator
         .push(context,
-            new MaterialPageRoute(builder: (context) => new AddWorkoutScreen()))
+            new MaterialPageRoute(builder: (context) => new AddRoutineForm(workoutState)))
         .then((b) {
       populateRoutines();
     });
@@ -34,7 +35,7 @@ class WorkoutDetailScreenState extends State<WorkoutDetailScreen> {
 
   void populateRoutines() async {
     AppDatabase db = new AppDatabase();
-    db.getAllRoutines(workoutState.title).then((newRoutines) {
+    db.getWorkoutRoutines(workoutState.title).then((newRoutines) {
       setState(() => routines = newRoutines);
     });
   }
@@ -74,7 +75,7 @@ class WorkoutDetailScreenState extends State<WorkoutDetailScreen> {
                 itemBuilder: (BuildContext context, int index) {
                   return new RoutineItem(routines[index], onDelete: (id) {
                     AppDatabase db = new AppDatabase();
-                    db.deleteWorkout(id).then((b) {
+                    db.deleteRoutine(id).then((b) {
                       populateRoutines();
                     });
                   });
@@ -85,7 +86,7 @@ class WorkoutDetailScreenState extends State<WorkoutDetailScreen> {
         ),
       ),
       floatingActionButton: new FloatingActionButton(
-          child: new Icon(Icons.add), onPressed: () => openAddWorkoutScreen()),
+          child: new Icon(Icons.add), onPressed: () => openAddRoutineScreen()),
     );
   }
 }
